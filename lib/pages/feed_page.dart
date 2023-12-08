@@ -16,9 +16,10 @@ final images = [
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjfAjC8_-lf8KEaz5lmP8eR2tP15yAugK5EA&usqp=CAU'
 ];
 
- int currentIndex  = 0;
-
 class _FeedPageState extends State<FeedPage> {
+
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +37,9 @@ class _FeedPageState extends State<FeedPage> {
           children: [
             Padding(padding: const EdgeInsets.all(8.0),
               child: Row(
-                children:[
-                  Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDd3EJfkqHKzGCVeZbilbV6gQVT8GYPXSKxg&usqp=CAU',
+                children: [
+                  Image.network(
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDd3EJfkqHKzGCVeZbilbV6gQVT8GYPXSKxg&usqp=CAU',
                     height: 20,
                     width: 20,
                   ),
@@ -51,10 +53,11 @@ class _FeedPageState extends State<FeedPage> {
                           children: [
                             Text('Instagram'),
                             SizedBox(width: 3),
-                            Icon(Icons.check_circle_rounded,size: 13,color: Colors.blue),
+                            Icon(Icons.check_circle_rounded, size: 13,
+                                color: Colors.blue),
                           ],
                         ),
-                        Text('サンティエゴ',style: TextStyle(fontSize: 10),)
+                        Text('サンティエゴ', style: TextStyle(fontSize: 10),)
                       ],
                     ),
                   ),
@@ -68,45 +71,46 @@ class _FeedPageState extends State<FeedPage> {
                 height: 400,
                 initialPage: 0,
                 viewportFraction: 1,
-                enlargeCenterPage: false,
-                onPageChanged: (index, reason) => setState(() {
-                  currentIndex = index;
-                }),
+                enableInfiniteScroll: false,
+                onPageChanged: (index, reason) =>
+                    setState(() {
+                      _currentIndex = index;
+                    }),
               ),
               itemCount: images.length,
               itemBuilder: (context, index, realIndex) {
                 final imageUrl = images[index];
-                return buildImage(imageUrl: imageUrl);
+                return buildImage(imageUrl);
               },),
-            const Padding(padding: EdgeInsets.all(8),
-              child : Row(
-                children: [
-                  Expanded(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Positioned(
-                          left: 10,
-                          child: Icon(Icons.favorite_border),
-                        ),
-                        Positioned(
-                          left :40.0,
-                          child: Icon(Icons.messenger_outline),
-                        ),
-                        Positioned(
-                          left :80.0,
-                          child: Icon(Icons.send),
-                        ),
-                        Positioned(
-                          right :10.0,
-                          child: Icon(Icons.archive_outlined)
-                        ),
-                        buildIndicator(),
-                      ],
+             Padding(padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: <Widget>[
+                          const Positioned(
+                            left: 10,
+                            child: Icon(Icons.favorite_border),
+                          ),
+                          const Positioned(
+                            left: 40.0,
+                            child: Icon(Icons.messenger_outline),
+                          ),
+                          const Positioned(
+                            left: 80.0,
+                            child: Icon(Icons.send),
+                          ),
+                          const Positioned(
+                              right: 10.0,
+                              child: Icon(Icons.archive_outlined)
+                          ),
+                          buildIndicator(),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              )
+                  ],
+                )
             ),
             const Padding(padding: EdgeInsets.all(8),
               child: Row(
@@ -114,7 +118,8 @@ class _FeedPageState extends State<FeedPage> {
                   SizedBox(width: 10),
                   Text(
                       "いいね! 「70.4899件」",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10)
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 10)
                   ),
                 ],
               ),
@@ -133,37 +138,27 @@ class _FeedPageState extends State<FeedPage> {
       ),
     );
   }
-}
 
-class buildImage extends StatelessWidget {
-  const buildImage({super.key,required this.imageUrl});
-  final String imageUrl;
 
-  @override
-  Widget build(BuildContext context) {
-    return  Image.network(
-      imageUrl,
-      fit: BoxFit.cover,
-    );
-  }
-}
+  Widget buildImage(imageUrl) =>
+      Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+      );
 
-class buildIndicator extends StatelessWidget {
-   const buildIndicator({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 20,
-      child: AnimatedSmoothIndicator(
-        activeIndex: currentIndex,
-        count: images.length,
-        effect: const JumpingDotEffect(
-            dotHeight: 5,
-            dotWidth: 5,
-            spacing: 5.0,
-            activeDotColor: Colors.blue,
-            dotColor: Colors.grey),
-      ),
-    );
-  }
+  Widget buildIndicator() =>
+      SizedBox(
+        height: 20,
+        child: AnimatedSmoothIndicator(
+          activeIndex: _currentIndex,
+          count: images.length,
+          effect: const JumpingDotEffect(
+              dotHeight: 5,
+              dotWidth: 5,
+              spacing: 5.0,
+              activeDotColor: Colors.blue,
+              dotColor: Colors.grey),
+        ),
+      );
+
 }
